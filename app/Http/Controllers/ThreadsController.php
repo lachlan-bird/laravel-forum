@@ -33,7 +33,9 @@ class ThreadsController extends Controller
             return $threads;
         }
 
-        return view('threads.index', compact('threads'));
+        return view('threads.index', [
+            'threads' => $threads
+        ]);
     }
 
     /**
@@ -77,7 +79,7 @@ class ThreadsController extends Controller
      * @param  \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread)
+    public function show($channel, Thread $thread)
     {
         return view('threads.show', [
             'thread' => $thread,
@@ -85,7 +87,18 @@ class ThreadsController extends Controller
         ]);
     }
 
-    /**
+    public function destroy($channel, Thread $thread) 
+    {
+        $thread->delete();
+
+        if(request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect('/threads');
+    }
+
+    /** 
      * Fetch all relevant threads.
      *
      * @param Channel       $channel
