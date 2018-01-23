@@ -72,4 +72,34 @@ class ParticipateInThreadsTest extends TestCase
             'id' => $reply->id
         ]);
     }
+
+    /** @test */
+    function unauthorised_users_cannot_update_replies()
+    {
+        $this->withExceptionHandling();
+        
+        $reply = create('App\Reply');
+
+        $this->patch("/replies/{$reply->id}", ['body' => 'I cannot do this!'])
+            ->assertRedirect('login');
+
+        $this->signIn()
+            ->patch("/replies/{$reply->id}", ['body' => 'Or this!'])
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    function authorised_users_can_update_replies() 
+    {
+        $this->signIn();
+
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
+
+        $this->patch("/replies/{$reply->id}", ['body' => 'Changed'])->assertStatus(200);
+
+        $this->assertDatabaseHas('replies', [
+            'id' => $reply->id,
+            'body' => 'Changed'
+        ]);
+    }
 }
