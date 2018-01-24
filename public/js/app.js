@@ -976,6 +976,7 @@ __webpack_require__(30);
 
 Vue.component('flash', __webpack_require__(36));
 Vue.component('reply', __webpack_require__(54));
+Vue.component('favourite', __webpack_require__(56));
 
 var app = new Vue({
   el: '#app'
@@ -43415,6 +43416,122 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $(this.$el).fadeOut(300, function () {
                 flash('Your reply has been deleted.');
             });
+        }
+    }
+});
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(37)(
+  /* script */
+  __webpack_require__(58),
+  /* template */
+  __webpack_require__(57),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/lachlan/Projects/lets-build-a-forum/resources/assets/js/components/Favourite.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Favourite.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-276a80a4", Component.options)
+  } else {
+    hotAPI.reload("data-v-276a80a4", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('button', {
+    class: _vm.classes,
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": _vm.toggle
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-heart"
+  }), _vm._v(" "), _c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.count)
+    }
+  })])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-276a80a4", module.exports)
+  }
+}
+
+/***/ }),
+/* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['reply'],
+
+    data: function data() {
+        return {
+            count: this.reply.favouritesCount,
+            isFavourited: this.reply.isFavourited
+        };
+    },
+
+
+    computed: {
+        classes: function classes() {
+            return ['btn', this.isFavourited ? 'btn-primary' : 'btn-default'];
+        },
+        endpoint: function endpoint() {
+            return '/replies/' + this.reply.id + '/favourites';
+        }
+    },
+
+    methods: {
+        toggle: function toggle() {
+            this.isFavourited ? this.destroy() : this.create();
+        },
+        destroy: function destroy() {
+            axios.delete(this.endpoint);
+
+            this.isFavourited = false;
+            this.count--;
+        },
+        create: function create() {
+            axios.post(this.endpoint);
+
+            this.isFavourited = true;
+            this.count++;
         }
     }
 });

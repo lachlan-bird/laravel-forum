@@ -28,6 +28,8 @@ Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store');
 
 Route::patch('/replies/{reply}', 'RepliesController@update');
 Route::delete('/replies/{reply}', 'RepliesController@destroy');
+
 Route::post('/replies/{reply}/favourites', 'FavouritesController@store');
+Route::delete('/replies/{reply}/favourites', 'FavouritesController@destroy');
 
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
