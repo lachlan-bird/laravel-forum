@@ -19,6 +19,19 @@ class Reply extends Model
 
     protected $appends = ['favouritesCount', 'isFavourited'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($reply) {
+            $reply->thread->increment('replies_count');
+        });
+
+        static::deleted(function ($reply) {
+            $reply->thread->decrement('replies_count');
+        });
+    }
+
     /**
      * A reply has an owner.
      *
