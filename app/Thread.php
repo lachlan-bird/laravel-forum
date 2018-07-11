@@ -83,11 +83,17 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        $this->subscriptions
-            ->where('user_id', '!=', $reply->user_id)
-            ->each->notify($this, $reply);
+        $this->notifySubscribers($reply);
 
         return $reply; 
+    }
+
+    private function notifySubscribers($reply) 
+    {
+        $this->subscriptions
+            ->where('user_id', '!=', $reply->user_id)
+            ->each
+            ->notify($this, $reply);
     }
 
     /**
@@ -130,5 +136,11 @@ class Thread extends Model
         return $this->subscriptions()
             ->where('user_id', auth()->id())
             ->exists();
+    }
+
+    public function hasUpdatesFor($user = null)
+    {
+        $user = $user ?: auth()->user();
+        return $this->updated_at > cache($user->visitThreadCacheKey($this));
     }
 }
