@@ -6,7 +6,6 @@ use App\Thread;
 use App\Reply;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Forms\CreatePostForm;
-use App\Notifications\YouWereMentioned;
 use App\User;
 
 class RepliesController extends Controller
@@ -36,18 +35,7 @@ class RepliesController extends Controller
         $reply = $thread->addReply([ 
             'body' => request('body'), 
             'user_id' => auth()->id()
-        ]);
-
-        preg_match_all('/\@([^\s\.]+)/', $reply->body, $matches);
-    
-        $names = $matches[1];
-        $users = User::whereIn('name', $names)->get();
-
-        foreach($users as $user) {
-            $user->notify(new YouWereMentioned($reply));
-        }
-
-        $reply->load('owner');
+        ])->load('owner');
     }
 
     public function destroy(Reply $reply)
