@@ -41,13 +41,10 @@ class RepliesController extends Controller
         preg_match_all('/\@([^\s\.]+)/', $reply->body, $matches);
     
         $names = $matches[1];
+        $users = User::whereIn('name', $names)->get();
 
-        foreach($names as $name) {
-            $user = User::whereName($name)->first();
-
-            if($user) {
-                $user->notify(new YouWereMentioned($reply));
-            }
+        foreach($users as $user) {
+            $user->notify(new YouWereMentioned($reply));
         }
 
         $reply->load('owner');
