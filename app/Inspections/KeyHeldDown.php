@@ -4,8 +4,16 @@ namespace App\Inspections;
 
 use Exception;
 
-class KeyHeldDown 
+/**
+ * Class KeyHeldDown
+ * @package App\Inspections
+ */
+class KeyHeldDown
 {
+    /**
+     * @param $text
+     * @throws Exception
+     */
     public function detect($text)
     {
         if(preg_match('/(.)\\1{4,}/', $text))

@@ -101,6 +101,10 @@ class Thread extends Model
         return $filters->apply($query);
     }
 
+    /**
+     * @param string $userId
+     * @return $this
+     */
     public function subscribe($userId = null)
     {
         $this->subscriptions()->create([
@@ -110,20 +114,30 @@ class Thread extends Model
         return $this;
     }
 
-    public function unsubscribe($userId = null) 
+    /**
+     * @param null $userId
+     * @return $this
+     */
+    public function unsubscribe($userId = null)
     {
         $this->subscriptions()
             ->where('user_id', $userId ?: auth()->id())
             ->delete();
         
-            return $this;
+        return $this;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function subscriptions()
     {
         return $this->hasMany(ThreadSubscription::class);
     }
 
+    /**
+     * @return bool
+     */
     public function getIsSubscribedToAttribute()
     {
         return $this->subscriptions()
@@ -131,6 +145,10 @@ class Thread extends Model
             ->exists();
     }
 
+    /**
+     * @param null $user
+     * @return bool
+     */
     public function hasUpdatesFor($user = null)
     {
         $user = $user ?: auth()->user();

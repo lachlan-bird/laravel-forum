@@ -43,16 +43,30 @@ class Reply extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * A reply has a thread
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function thread()
     {
         return $this->belongsTo(Thread::class);
     }
 
+    /**
+     * Determines whether the reply was published within 1 minute
+     *
+     * @return mixed
+     */
     public function wasJustPublished()
     {
         return $this->created_at->gt(Carbon::now()->subMinute());
     }
 
+    /**
+     * Returns a list of mentioned users in the replies body
+     * @return mixed
+     */
     public function mentionedUsers()
     {
         preg_match_all('/@([\w\-]+)/', $this->body, $matches);
@@ -70,6 +84,9 @@ class Reply extends Model
         return $this->thread->path() . "#reply-{$this->id}";
     }
 
+    /**
+     * @param $body
+     */
     public function setBodyAttribute($body)
     {
         $this->attributes['body'] = preg_replace('/@([\w\-]+)/', '<a href="/profiles/$1">$0</a>', $body);

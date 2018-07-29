@@ -4,12 +4,23 @@ namespace App\Inspections;
 
 use Exception;
 
-class InvalidKeywords 
+/**
+ * Class InvalidKeywords
+ * @package App\Inspections
+ */
+class InvalidKeywords
 {
+    /**
+     * @var array
+     */
     protected $keywords = [
         'yahoo customer support'
     ];
 
+    /**
+     * @param $text
+     * @throws Exception
+     */
     public function detect($text)
     {
         foreach($this->keywords as $keyword)

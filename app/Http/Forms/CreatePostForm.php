@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Gate;
 use App\Reply;
 use App\Exceptions\ThrottleException;
 
+/**
+ * Class CreatePostForm
+ * @package App\Http\Forms
+ */
 class CreatePostForm extends FormRequest
 {
     /**
@@ -19,6 +23,9 @@ class CreatePostForm extends FormRequest
         return Gate::allows('create', new Reply);
     }
 
+    /**
+     * @throws ThrottleException
+     */
     protected function failedAuthorization()
     {
         throw new ThrottleException('You are replying too frequently. Please take a break.');

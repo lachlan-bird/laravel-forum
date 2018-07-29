@@ -89,7 +89,12 @@ class ThreadsController extends Controller
         return view('threads.show', compact('thread'));
     }
 
-    public function destroy($channel, Thread $thread) 
+    /**
+     * @param $channel
+     * @param Thread $thread
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\Response
+     */
+    public function destroy($channel, Thread $thread)
     {
         $this->authorize('update', $thread);
         
@@ -120,6 +125,6 @@ class ThreadsController extends Controller
             $threads->where('channel_id', $channel->id);
         }
 
-        return $threads->get();
+        return $threads->paginate(25);
     }
 }

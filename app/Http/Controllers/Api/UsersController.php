@@ -7,6 +7,9 @@ use App\User;
 
 class UsersController extends Controller
 {
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function index()
     {
         $search = request('name');
