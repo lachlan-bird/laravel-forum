@@ -84,4 +84,12 @@ class User extends Authenticatable
     {
         return cache()->forever($this->visitThreadCacheKey($thread), Carbon::now());
     }
+
+    /**
+     * Exposes the users avatar. Returns a default image if they have not uploaded one yet
+     */
+    public function avatar()
+    {
+        return asset($this->avatar_path ?: 'avatars/default.jpg');
+    }
 }
