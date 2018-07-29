@@ -11,8 +11,9 @@ use Illuminate\Http\Request;
  */
 class UserAvatarController extends Controller
 {
+
     /**
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function store()
     {
@@ -24,6 +25,6 @@ class UserAvatarController extends Controller
             'avatar_path' => request()->file('avatar')->store('avatars', 'public')
         ]);
 
-        return back();
+        return response([], 204);
     }
 }
