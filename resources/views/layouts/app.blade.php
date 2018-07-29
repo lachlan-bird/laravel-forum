@@ -12,7 +12,6 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
     <!-- Scripts -->
     <script>
         window.App = {!! json_encode([
@@ -43,6 +42,8 @@
             display: none
         }
     </style>
+
+    @yield('head')
 </head>
 <body style="padding-bottom: 100px;">
 <div id="app">
