@@ -6,10 +6,11 @@ use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\ThreadReceivedNewReply;
+use Illuminate\Support\Facades\Redis;
 
 class Thread extends Model
 {
-    use RecordsActivity;
+    use RecordsActivity, RecordsVisits;
     /**
      * Don't auto-apply mass assignment protection.
      *
@@ -154,4 +155,5 @@ class Thread extends Model
         $user = $user ?: auth()->user();
         return $this->updated_at > cache($user->visitThreadCacheKey($this));
     }
+
 }
