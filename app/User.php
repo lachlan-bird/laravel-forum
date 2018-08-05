@@ -33,6 +33,10 @@ class User extends Authenticatable
         'password', 'remember_token', 'email'
     ];
 
+    protected $casts = [
+        'confirmed' => 'boolean'
+    ];
+
     /**
      * A user may have many threads.
      *
@@ -91,5 +95,11 @@ class User extends Authenticatable
     public function getAvatarPathAttribute($avatar)
     {
         return asset($avatar ?: 'images/avatar/default.png');
+    }
+
+    public function confirm()
+    {
+        $this->confirmed = true;
+        $this->save();
     }
 }

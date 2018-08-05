@@ -128,9 +128,8 @@ class ParticipateInThreadsTest extends TestCase
         $thread = create('App\Thread');
 
         $reply = make('App\Reply', ['body' => 'My simple reply']);
-
         $this->post($thread->path() . '/replies', $reply->toArray())
-            ->assertStatus(200); 
+            ->assertStatus(200);
 
         // Second request within a minute should throw an error status code
         $this->post($thread->path() . '/replies', $reply->toArray())
